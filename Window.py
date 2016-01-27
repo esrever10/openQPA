@@ -1,9 +1,8 @@
 #! /usr/bin/env python  
 # -*- coding: utf-8 -*-
 '''
-Created on 2016-01-05
-
-@author: qielige
+@author zhuzhu
+@contact QQ327909056
 '''
 import os,re
 from PyQt4.QtGui import *
@@ -14,13 +13,12 @@ import httplib2
 import AppProperty
 import base64
 import webbrowser
-from TweetWindow import TweetWindow
 import analysis2,calc,dpcap
-from URLs import URLs
 import time
 from subprocess import *
 import datetime
 import calc
+import connect
 
 class Window(RoundWindow): 
     def __init__(self, url,width,height,windowType=0,handleMethod=""):  
@@ -138,14 +136,14 @@ class Window(RoundWindow):
         self.nicID=str(mstr).split('-')[0]
         self.nicType=str(mstr).split('-')[1]
         self.capDir=datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
-        calc.exeCap(self.nicID,self.capDir,self.nicType)
+        connect.exeCap(self.nicID,self.capDir,self.nicType)
         self.pname_size={}
         self.ptime = time.time()
         return "OK"
     
     @pyqtSignature("",result="QString")
     def showNIC(self):
-        sn=os.popen(r'NIC.exe')
+        sn=connect.exeNic()
         nlist=sn.readlines()
         back=""
         for i in range(len(nlist)):
@@ -330,5 +328,5 @@ class Window(RoundWindow):
 
     @pyqtSignature("",result="QString")
     def installWinPcap(self):
-        os.popen("WinPcap_4.1.3.exe")
+        connect.exeWinPcap()
         return ''
